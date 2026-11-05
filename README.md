@@ -3,7 +3,6 @@
 [![C#](https://img.shields.io/badge/C%23-.NET%20Framework%204.7.2-239120?style=for-the-badge&logo=c-sharp&logoColor=white)](https://dotnet.microsoft.com/)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0%2B-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
 [![Windows Forms](https://img.shields.io/badge/UI-Windows%20Forms-0078D7?style=for-the-badge&logo=windows&logoColor=white)](https://learn.microsoft.com/dotnet/desktop/winforms/)
-[![Lisans](https://img.shields.io/badge/Lisans-MIT-green?style=for-the-badge)](#lisans)
 
 C# Windows Forms ve MySQL kullanılarak geliştirilmiş; çalışan, proje ve kullanıcı yönetimini tek bir merkezde toplayan masaüstü yönetim uygulamasıdır. Proje, tüm veritabanı işlemlerini **MySQL Saklı Yordamları (Stored Procedures)** ve parametrik sorgular üzerinden yürüterek yüksek veri güvenliği ve SQL Injection koruması sağlar.
 
@@ -14,27 +13,31 @@ C# Windows Forms ve MySQL kullanılarak geliştirilmiş; çalışan, proje ve ku
 Uygulama, sorumlulukların ayrıldığı katmanlı bir yaklaşımla tasarlanmıştır:
 
 ```mermaid
-graph TD
-    subgraph Sunum Katmanı (Windows Forms UI)
+flowchart TD
+    subgraph UI ["Sunum Katmani (Windows Forms UI)"]
         F1["Ana Menü / Kontrol Paneli (Form1)"]
         F2["Çalışan Yönetim Formu (CalisanFormu)"]
         F3["Proje Tanımlama Formu (ProjeEklemeFormu)"]
         F4["Kullanıcı Kayıt Formu (YeniKullaniciEkle)"]
     end
 
-    subgraph Veri Erişim Katmanı (DAL)
-        DBC["Veritabanı Yöneticisi<br/>(DbConnectorManager)<br/>App.config Bağlantı Yönetimi"]
+    subgraph DAL ["Veri Erişim Katmanı (DAL)"]
+        DBC["Veritabanı Yöneticisi (DbConnectorManager)<br/>App.config Bağlantı Yönetimi"]
     end
 
-    subgraph Veritabanı Katmanı (MySQL Database)
-        DB[(databaseproje)]
-        SP["Saklı Yordamlar (Stored Procedures)<br/>• CalisanlariListele<br/>• CalisanEkle<br/>• CalisanGuncelle<br/>• CalisanSil<br/>• ProjeleriListele<br/>• ProjeEkle"]
+    subgraph DB_LAYER ["Veritabanı Katmanı (MySQL Database)"]
+        DB[("MySQL Database: databaseproje")]
+        SP["Saklı Yordamlar (Stored Procedures)<br/>• CalisanlariListele • CalisanEkle<br/>• CalisanSil • CalisanGuncelle<br/>• ProjeleriListele • ProjeEkle"]
     end
 
-    F1 --> F2 & F3 & F4
-    F2 & F3 & F4 -->|Parametrik Veri| DBC
-    DBC -->|Stored Procedure Çağrısı| SP
-    SP <-->|Okuma / Yazma| DB
+    F1 --> F2
+    F1 --> F3
+    F1 --> F4
+    F2 --> DBC
+    F3 --> DBC
+    F4 --> DBC
+    DBC --> SP
+    SP <--> DB
 ```
 
 ---
@@ -111,9 +114,3 @@ graph TD
 1. `ProjeYonetimSistemi.sln` çözüm dosyasını Visual Studio ile açın.
 2. NuGet paketlerinin geri yüklenmesi için projeye sağ tıklayıp **Restore NuGet Packages** seçeneğini kullanın.
 3. **F5** veya **Start** tuşuna basarak projeyi başlatın.
-
----
-
-## Lisans
-
-Bu proje [MIT Lisansı](LICENSE) kapsamında açık kaynak olarak paylaşılmıştır.
