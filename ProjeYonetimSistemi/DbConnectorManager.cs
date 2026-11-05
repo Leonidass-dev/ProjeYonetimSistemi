@@ -1,25 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MySql.Data.MySqlClient;
+using System;
+using System.Configuration;
 using System.Data;
-using ProjeYönetimSistemi;
+using MySql.Data.MySqlClient;
 
 namespace ProjeYönetimSistemi
 {
     public static class DbConnectorManager
     {
-       
-        private static string connectionString = "Server=localhost;Database=databaseproje;Uid=root;Pwd=2003;";
+        private static string GetConnectionString()
+        {
+            var configConnection = ConfigurationManager.ConnectionStrings["DefaultConnection"]?.ConnectionString;
+            if (!string.IsNullOrWhiteSpace(configConnection))
+            {
+                return configConnection;
+            }
+            return "Server=localhost;Database=databaseproje;Uid=root;Pwd=root;";
+        }
 
-        // Saklı yordamları çalıştırmak için metod
+        /// <summary>
+        /// Saklı yordamları (Stored Procedure) çalıştırıp sonuç tablosunu (DataTable) döndürür.
+        /// </summary>
         public static DataTable ExecuteStoredProcedure(string storedProcedureName, MySqlParameter[] parameters = null)
         {
             DataTable resultTable = new DataTable();
 
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(GetConnectionString()))
             {
                 try
                 {
@@ -27,16 +32,13 @@ namespace ProjeYönetimSistemi
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        // Parametreleri ekle
                         if (parameters != null)
                         {
                             command.Parameters.AddRange(parameters);
                         }
 
-                        
                         connection.Open();
 
-                        
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
                             resultTable.Load(reader);
@@ -45,17 +47,20 @@ namespace ProjeYönetimSistemi
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Hata: {ex.Message}");
+                    Console.WriteLine($"[DbConnectorManager] Hata: {ex.Message}");
+                    throw;
                 }
             }
 
             return resultTable;
         }
 
-        // Saklı yordamı sadece veri alıp yazmak için kullanabileceğiniz bir versiyon
+        /// <summary>
+        /// Sonuç tablosu dönmeyen saklı yordamları (INSERT, UPDATE, DELETE) çalıştırır.
+        /// </summary>
         public static void ExecuteStoredProcedureNonQuery(string storedProcedureName, MySqlParameter[] parameters = null)
         {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(GetConnectionString()))
             {
                 try
                 {
@@ -63,29 +68,21 @@ namespace ProjeYönetimSistemi
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        // Parametreleri ekle
                         if (parameters != null)
                         {
                             command.Parameters.AddRange(parameters);
                         }
 
-                        // Veritabanı bağlantısını aç
                         connection.Open();
-
-                        // Saklı yordamı çalıştır (sonuç dönmeyen işlemler için)
                         command.ExecuteNonQuery();
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Hata: {ex.Message}");
+                    Console.WriteLine($"[DbConnectorManager] Hata: {ex.Message}");
+                    throw;
                 }
             }
         }
-
-        
-
-
-
     }
 }

@@ -128,11 +128,11 @@
     <Compile Include="CalisanFormu.Designer.cs">
       <DependentUpon>CalisanFormu.cs</DependentUpon>
     </Compile>
-    <Compile Include="YeniKullanıcıEkle.cs">
+    <Compile Include="YeniKullaniciEkle.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="YeniKullanıcıEkle.Designer.cs">
-      <DependentUpon>YeniKullanıcıEkle.cs</DependentUpon>
+    <Compile Include="YeniKullaniciEkle.Designer.cs">
+      <DependentUpon>YeniKullaniciEkle.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -152,8 +152,8 @@
     <EmbeddedResource Include="CalisanFormu.resx">
       <DependentUpon>CalisanFormu.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="YeniKullanıcıEkle.resx">
-      <DependentUpon>YeniKullanıcıEkle.cs</DependentUpon>
+    <EmbeddedResource Include="YeniKullaniciEkle.resx">
+      <DependentUpon>YeniKullaniciEkle.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
