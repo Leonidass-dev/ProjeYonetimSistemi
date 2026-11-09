@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 using System.Windows.Forms;
 
 namespace ProjeYönetimSistemi
@@ -13,6 +6,9 @@ namespace ProjeYönetimSistemi
     public partial class Form1 : Form
     {
         private ProjeEklemeFormu projeEkleForm = null;
+        private CalisanFormu calisanform = null;
+        private YeniKullaniciEkle yeniKullaniciForm = null;
+
         public Form1()
         {
             InitializeComponent();
@@ -20,7 +16,6 @@ namespace ProjeYönetimSistemi
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // Eğer form daha önce açılmadıysa, aç
             if (projeEkleForm == null || projeEkleForm.IsDisposed)
             {
                 projeEkleForm = new ProjeEklemeFormu();
@@ -28,16 +23,12 @@ namespace ProjeYönetimSistemi
             }
             else
             {
-                // Form daha önce açıldıysa, sadece göster
-                projeEkleForm.Activate();  // Var olan formu ön planda aktif hale getir
+                projeEkleForm.Activate();
             }
-
         }
 
-        private CalisanFormu calisanform = null;
         private void btncalisan_Click(object sender, EventArgs e)
         {
-            // Eğer form daha önce açılmadıysa, aç
             if (calisanform == null || calisanform.IsDisposed)
             {
                 calisanform = new CalisanFormu();
@@ -45,11 +36,21 @@ namespace ProjeYönetimSistemi
             }
             else
             {
-                // Form daha önce açıldıysa, sadece göster
-                calisanform.Activate();  // Var olan formu ön planda aktif hale getir
+                calisanform.Activate();
             }
         }
 
-        
+        private void btnYeniKullanici_Click(object sender, EventArgs e)
+        {
+            if (yeniKullaniciForm == null || yeniKullaniciForm.IsDisposed)
+            {
+                yeniKullaniciForm = new YeniKullaniciEkle();
+                yeniKullaniciForm.Show();
+            }
+            else
+            {
+                yeniKullaniciForm.Activate();
+            }
+        }
     }
 }
